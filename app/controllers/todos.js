@@ -13,7 +13,7 @@ router.get('/',(req,res) => {
 });
 
 //POST a todo
-router.post('/todo',(req,res) => {
+router.post('/',(req,res) => {
     let body = req.body;
     let newTodo = new Todo(body);
     newTodo.save().then((todo) => {
@@ -21,6 +21,22 @@ router.post('/todo',(req,res) => {
     }).catch((err) => {
         res.send(err);
     })
+});
+
+//UPDATE  a todo
+router.put('/:id',(req,res) => {
+    let body = req.body;
+    let id= req.params.id;
+
+    Todo.findByIdAndUpdate({_id: id},{$set: body},{new: true ,runValidators: true}).then((editTodo) => {
+        res.send({
+            todo : editTodo,
+            notice: 'Your todo was updated succesfully!'
+        })
+    }).catch((err) => {
+        res.send(err);
+    })
+
 });
 
 //DELETE a todo
